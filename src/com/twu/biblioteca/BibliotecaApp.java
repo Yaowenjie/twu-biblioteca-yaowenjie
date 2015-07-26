@@ -1,18 +1,19 @@
 package com.twu.biblioteca;
 
 import entity.Book;
+import entity.ItemList;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class BibliotecaApp {
-    public static List<Book> booklist = new ArrayList<Book>();
-    private static boolean isQuit=false;
+    private static ItemList itemList = new ItemList();
 
     public static void main(String[] args) {
-        booklist.add(new Book("Java", "Zhangyu", "2015", true));
-        booklist.add(new Book("spring", "YWJ", "2015", true));
-        booklist.add(new Book("Eat", "Dog", "2015", true));
+        itemList.addToBookList(new Book("Java", "Zhangyu", "2015", true));
+        itemList.addToBookList(new Book("spring", "YWJ", "2015", true));
+        itemList.addToBookList(new Book("Eat", "Dog", "2015", true));
         welcomeMessage();
         mainMenu();
     }
@@ -23,31 +24,20 @@ public class BibliotecaApp {
         System.out.println(" Library Management System  ");
     }
 
-    public static void listAllBooks() {
-        for (Book book:booklist){
-            if(book.isAvailable()){
-                System.out.println("^^^^^^^^^^^Book Details^^^^^^^^^^^");
-                System.out.println("Name: "+book.getName());
-                System.out.println("Authors: "+book.getAuthors());
-                System.out.println("Published Year: "+book.getPublishedYear());
-            }
-        }
-        pageMenu();
-    }
-
-    public static void mainMenu(){
+    public static void mainMenu() {
         System.out.println("---------------------------");
-        System.out.println("- 1.List Books            -" );
-        System.out.println("- 2 Checkout Books        -" );
-        System.out.println("- 3 Return Books        -" );
-        System.out.println("- 6.Quit                  -" );
+        System.out.println("- 1.List Books            -");
+        System.out.println("- 2 Checkout Books        -");
+        System.out.println("- 3 Return Books        -");
+        System.out.println("- 7.Quit                  -");
         System.out.println("---------------------------");
         System.out.println("Please enter your option:");
 
         int option = Integer.parseInt(getInputNum());
         switch (option) {
             case 1:
-                listAllBooks();
+                itemList.listAllItems("book");
+                pageMenu();
                 break;
             case 2:
                 inoutMenu("out");
@@ -55,8 +45,7 @@ public class BibliotecaApp {
             case 3:
                 inoutMenu("in");
                 break;
-            case 6:
-                isQuit = true;
+            case 7:
                 break;
             default:
                 System.out.println("Select a valid option!");
@@ -69,21 +58,26 @@ public class BibliotecaApp {
         System.out.println("------------------------------");
         System.out.println("- 1.Enter the name of book   -");
         System.out.println("- 2.Return to main menu      -");
-        System.out.println("- 3.Quit                     -");
+        System.out.println("- 7.Quit                     -");
         System.out.println("------------------------------");
         System.out.println("Please enter your option:");
         int option = Integer.parseInt(getInputNum());
         switch (option) {
             case 1:
                 System.out.println("Input your book name:");
-                if (inout.equals("in")) returnBooks(getInputString());
-                else checkoutBooks(getInputString());
+                if (inout.equals("in")) {
+                    itemList.returnToList("book",getInputString());
+                    inoutMenu("in");
+                }
+                else{
+                    itemList.checkoutFromList("book",getInputString());
+                    inoutMenu("out");
+                }
                 break;
             case 2:
                 mainMenu();
                 break;
-            case 3:
-                isQuit = true;
+            case 7:
                 break;
             default:
                 System.out.println("Select a valid option!");
@@ -95,7 +89,7 @@ public class BibliotecaApp {
     public static void pageMenu() {
         System.out.println("------------------------------");
         System.out.println("- 1.Return to main menu      -");
-        System.out.println("- 2.Quit                     -");
+        System.out.println("- 7.Quit                     -");
         System.out.println("------------------------------");
         System.out.println("Please enter your option:");
         int option = Integer.parseInt(getInputNum());
@@ -103,8 +97,7 @@ public class BibliotecaApp {
             case 1:
                 mainMenu();
                 break;
-            case 2:
-                isQuit = true;
+            case 7:
                 break;
             default:
                 System.out.println("Select a valid option!");
@@ -113,50 +106,22 @@ public class BibliotecaApp {
         }
     }
 
-     private static String getInputNum() {
-         Scanner scan = new Scanner(System.in);
-         String line = scan.nextLine();
-         if (!line.matches("[0-9]|[1-9][0-9]+"))
-         {
-             System.out.println("Select a valid option!");
-             line = getInputNum();
-         }
-         while(line==null){}
-         return line;
-    }
-
-    private static String getInputString() {
-        Scanner scan = new Scanner(System.in);
-        String line = scan.nextLine();
-        while(line==null){}
+    private static String getInputNum() {
+        String line = (new Scanner(System.in)).nextLine();
+        if (!line.matches("[0-9]|[1-9][0-9]+")) {
+            System.out.println("Select a valid option!");
+            line = getInputNum();
+        }
+        while (line == null) {
+        }
         return line;
     }
 
-    public static void checkoutBooks(String name) {
-        boolean isCheckouted = false;
-        for (Book book:booklist){
-            if(book.isAvailable() && name.equals(book.getName())){
-                book.setIsAvailable(false);
-                System.out.println("Thank You! Enjoy the book!");
-                isCheckouted = true;
-                break;
-            }
+    private static String getInputString() {
+        String line = (new Scanner(System.in)).nextLine();
+        while (line == null) {
         }
-        if(!isCheckouted) System.out.println("That book is not available.");
-        inoutMenu("out");
+        return line;
     }
 
-    private static void returnBooks(String name) {
-        boolean isReturned = false;
-        for (Book book:booklist){
-            if((!book.isAvailable()) && name.equals(book.getName())){
-                book.setIsAvailable(true);
-                System.out.println("Thank you for returning the book!");
-                isReturned = true;
-                break;
-            }
-        }
-        if(!isReturned) System.out.println("That is not a valid book to return.");
-        inoutMenu("in");
-    }
 }

@@ -3,25 +3,12 @@
  */
 package entity;
 
-public class Book {
-    private String name;
+public class Book extends Item{
     private String authors;
-    private String publishedYear;
-    private boolean isAvailable;
 
-    public Book(String name, String authors, String publishedYear, boolean isAvailable) {
-        this.name = name;
+    public Book(String name, String authors, String year, boolean isAvailable) {
+        super(name, year, isAvailable);
         this.authors = authors;
-        this.publishedYear = publishedYear;
-        this.isAvailable = isAvailable;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getAuthors() {
@@ -32,19 +19,6 @@ public class Book {
         this.authors = authors;
     }
 
-    public String getPublishedYear() {
-        return publishedYear;
-    }
 
-    public void setPublishedYear(String publishedYear) {
-        this.publishedYear = publishedYear;
-    }
 
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
-    public void setIsAvailable(boolean isAvailable) {
-        this.isAvailable = isAvailable;
-    }
 }
