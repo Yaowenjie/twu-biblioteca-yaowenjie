@@ -3,13 +3,14 @@ package com.twu.biblioteca;
 import entity.Book;
 import entity.ItemList;
 import entity.Movie;
+import entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class BibliotecaApp {
-    private static ItemList itemList = new ItemList();
+    public static ItemList itemList = new ItemList();
 
     public static void main(String[] args) {
         itemList.addToBookList(new Book("Java", "Zhangyu", "2015", true));
@@ -18,15 +19,34 @@ public class BibliotecaApp {
         itemList.addToMovieList(new Movie("God", "Jay", "2014", "2", true));
         itemList.addToMovieList(new Movie("MyGod", "MyJay", "2024", "unrated", true));
         itemList.addToMovieList(new Movie("HisGod", "HisJay", "2004", "2", true));
-        itemList.addToMovieList(new Movie("HerGod","HerJay","2014","10",true));
+        itemList.addToMovieList(new Movie("HerGod", "HerJay", "2014", "10", true));
+        itemList.addToUserList(new User("000-0001", "123", "ywj", "12345@qq.com", "110"));
+        itemList.addToUserList(new User("000-0002", "456", "zy", "12345@qq.com", "120"));
+        itemList.addToUserList(new User("000-0003", "789", "dog", "12345@qq.com", "119"));
         welcomeMessage();
-        mainMenu();
+        loginMenu();
     }
 
     public static void welcomeMessage() {
         System.out.println("*****************************");
         System.out.println("  Welcome to BibliotecaApp");
-        System.out.println(" Library Management System  ");
+        System.out.println(" Library Management System  ");;
+    }
+
+    public static void loginMenu() {
+        System.out.println("-----------------------------");
+        System.out.println("Input Your Library Number:");
+        String libNum = getInputString();
+        System.out.println("Input Your Password:");
+        String libPw = getInputString();
+        User loginUser = itemList.loginFromList(libNum,libPw);
+        if (loginUser!=null)    {
+            itemList.currentUser = loginUser;
+            mainMenu();
+        } else {
+            System.out.println("Library Number or Password ");
+            loginMenu();
+        }
     }
 
     public static void mainMenu() {
@@ -38,6 +58,7 @@ public class BibliotecaApp {
         System.out.println("- 5 Checkout Movies       -");
         System.out.println("- 6 Return Movies         -");
         System.out.println("- 7.Quit                  -");
+        System.out.println("- 0.For Librarian         -");
         System.out.println("---------------------------");
         System.out.println("Please enter your option:");
 
@@ -51,7 +72,7 @@ public class BibliotecaApp {
                 inoutMenu("book","out");
                 break;
             case 3:
-                inoutMenu("book","in");
+                inoutMenu("book", "in");
                 break;
             case 4:
                 itemList.listAllItems("movie");
@@ -63,8 +84,11 @@ public class BibliotecaApp {
             case 6:
                 inoutMenu("movie","in");
                 break;
-
             case 7:
+                break;
+            case 0:
+                itemList.listAllInfo();
+                pageMenu();
                 break;
             default:
                 System.out.println("Select a valid option!");
