@@ -2,6 +2,7 @@ package com.twu.biblioteca;
 
 import entity.Book;
 import entity.ItemList;
+import entity.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,10 @@ public class BibliotecaApp {
         itemList.addToBookList(new Book("Java", "Zhangyu", "2015", true));
         itemList.addToBookList(new Book("spring", "YWJ", "2015", true));
         itemList.addToBookList(new Book("Eat", "Dog", "2015", true));
+        itemList.addToMovieList(new Movie("God", "Jay", "2014", "2", true));
+        itemList.addToMovieList(new Movie("MyGod", "MyJay", "2024", "unrated", true));
+        itemList.addToMovieList(new Movie("HisGod", "HisJay", "2004", "2", true));
+        itemList.addToMovieList(new Movie("HerGod","HerJay","2014","10",true));
         welcomeMessage();
         mainMenu();
     }
@@ -28,7 +33,10 @@ public class BibliotecaApp {
         System.out.println("---------------------------");
         System.out.println("- 1.List Books            -");
         System.out.println("- 2 Checkout Books        -");
-        System.out.println("- 3 Return Books        -");
+        System.out.println("- 3 Return Books          -");
+        System.out.println("- 4 List Movies           -");
+        System.out.println("- 5 Checkout Movies       -");
+        System.out.println("- 6 Return Movies         -");
         System.out.println("- 7.Quit                  -");
         System.out.println("---------------------------");
         System.out.println("Please enter your option:");
@@ -40,11 +48,22 @@ public class BibliotecaApp {
                 pageMenu();
                 break;
             case 2:
-                inoutMenu("out");
+                inoutMenu("book","out");
                 break;
             case 3:
-                inoutMenu("in");
+                inoutMenu("book","in");
                 break;
+            case 4:
+                itemList.listAllItems("movie");
+                pageMenu();
+                break;
+            case 5:
+                inoutMenu("movie","out");
+                break;
+            case 6:
+                inoutMenu("movie","in");
+                break;
+
             case 7:
                 break;
             default:
@@ -54,9 +73,9 @@ public class BibliotecaApp {
         }
     }
 
-    public static void inoutMenu(String inout) {
+    public static void inoutMenu(String type,String inout) {
         System.out.println("------------------------------");
-        System.out.println("- 1.Enter the name of book   -");
+        System.out.println("- 1.Enter the name of item   -");
         System.out.println("- 2.Return to main menu      -");
         System.out.println("- 7.Quit                     -");
         System.out.println("------------------------------");
@@ -64,14 +83,14 @@ public class BibliotecaApp {
         int option = Integer.parseInt(getInputNum());
         switch (option) {
             case 1:
-                System.out.println("Input your book name:");
+                System.out.println("Please Input your "+type+" name:");
                 if (inout.equals("in")) {
-                    itemList.returnToList("book",getInputString());
-                    inoutMenu("in");
+                    itemList.returnToList(type,getInputString());
+                    inoutMenu(type,"in");
                 }
                 else{
-                    itemList.checkoutFromList("book",getInputString());
-                    inoutMenu("out");
+                    itemList.checkoutFromList(type,getInputString());
+                    inoutMenu(type,"out");
                 }
                 break;
             case 2:
@@ -81,7 +100,7 @@ public class BibliotecaApp {
                 break;
             default:
                 System.out.println("Select a valid option!");
-                inoutMenu(inout);
+                inoutMenu(type,inout);
                 break;
         }
     }

@@ -29,13 +29,13 @@ public class ItemList {
                             + "  |   Published Year: " + book.getYear());
             }
         } else if (type.equals("movie")) {
-            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^Movie Details^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^Movie Details^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             for (Movie movie : movieList) {
                 if (movie.isAvailable())
-                    System.out.println("Name: " + movie.getName()
-                            + "| Director: " + movie.getDirector()
-                            + "| Year: " + movie.getYear()
-                            + "| Rating:" + movie.getRating());
+                    System.out.println("*   Name: " + movie.getName()
+                            + "  |  Director: " + movie.getDirector()
+                            + "  |  Year: " + movie.getYear()
+                            + "  |  Rating:" + movie.getRating());
             }
         }
     }
